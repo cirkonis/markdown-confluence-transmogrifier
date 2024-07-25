@@ -10,6 +10,8 @@ def main():
     parser.add_argument('--confluence_space', help='Confluence space')
     parser.add_argument('--confluence_base_url', help='Confluence base URL')
     parser.add_argument('--confluence_parent_id', help='Confluence parent ID')
+    parser.add_argument('--markdown_documentation_directory', help='Markdown documentation directory')
+    parser.add_argument('--documentation_image_directory', help='Documentation image directory')
 
     args = parser.parse_args()
 
@@ -18,6 +20,10 @@ def main():
     config.CONFLUENCE_SPACE = args.confluence_space or config.CONFLUENCE_SPACE
     config.CONFLUENCE_BASE_URL = args.confluence_base_url or config.CONFLUENCE_BASE_URL
     config.CONFLUENCE_PARENT_ID = args.confluence_parent_id or config.CONFLUENCE_PARENT_ID
+    config.MARKDOWN_DOCUMENTATION_DIRECTORY = args.markdown_documentation_directory or config.MARKDOWN_DOCUMENTATION_DIRECTORY
+    config.DOCUMENTATION_IMAGE_DIRECTORY = args.documentation_image_directory or config.DOCUMENTATION_IMAGE_DIRECTORY
+
+    # Validate that all required Confluence configuration values are provided
 
     if not all([config.CONFLUENCE_TOKEN, config.CONFLUENCE_SPACE, config.CONFLUENCE_BASE_URL,
                 config.CONFLUENCE_PARENT_ID]):
