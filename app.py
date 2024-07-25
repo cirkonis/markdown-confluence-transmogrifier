@@ -2,6 +2,7 @@
 
 import argparse
 import config
+import logging
 
 
 def main():
@@ -31,12 +32,25 @@ def main():
             "All Confluence-related configuration values (token, space, base URL, parent ID) must be provided either "
             "via command-line arguments or environment variables.")
 
-    print(f"App Name: {config.APP_NAME}")
-    print(f"Logging Level: {config.LOGGING_LEVEL}")
-    print(f"Confluence Token: {config.CONFLUENCE_TOKEN}")
-    print(f"Confluence Base URL: {config.CONFLUENCE_BASE_URL}")
-    print(f"Confluence Space: {config.CONFLUENCE_SPACE}")
-    print(f"Confluence Parent ID: {config.CONFLUENCE_PARENT_ID}")
+
+    """
+    Configure the logging settings.
+    """
+    logging.basicConfig(
+        level=config.LOGGING_LEVEL.upper(),  # Set logging level based on configuration
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.StreamHandler()  # Output to console
+        ]
+    )
+
+    logging.info(f"App Name: {config.APP_NAME}")
+    logging.info(f"Logging Level: {config.LOGGING_LEVEL}")
+    logging.info(f"Confluence Base URL: {config.CONFLUENCE_BASE_URL}")
+    logging.info(f"Confluence Space: {config.CONFLUENCE_SPACE}")
+    logging.info(f"Confluence Parent ID: {config.CONFLUENCE_PARENT_ID}")
+    logging.info(f"Markdown Documentation Directory: {config.MARKDOWN_DOCUMENTATION_DIRECTORY}")
+    logging.info(f"Documentation Image Directory: {config.DOCUMENTATION_IMAGE_DIRECTORY}")
 
 
 if __name__ == "__main__":
