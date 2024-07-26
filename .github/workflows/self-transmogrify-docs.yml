@@ -1,0 +1,28 @@
+name: Self transmogrify docs
+
+on:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Run deployment
+        uses: docker://cirkonis/markdown-confluence-transmogrifier:latest
+        env:
+          CONFLUENCE_USER: ${{ secrets.CONFLUENCE_USER }}
+          CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
+          CONFLUENCE_SPACE: ${{ secrets.CONFLUENCE_SPACE }}
+          CONFLUENCE_BASE_URL: ${{ secrets.CONFLUENCE_BASE_URL }}
+          CONFLUENCE_PARENT_ID: ${{ secrets.CONFLUENCE_PARENT_ID }}
+          MARKDOWN_DOCUMENTATION_DIRECTORY: ../documentation/markdown
+          DOCUMENTATION_IMAGE_DIRECTORY: ../documentation/images
