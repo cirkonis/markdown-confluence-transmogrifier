@@ -9,7 +9,7 @@ from functions.set_auth_headers import set_auth_headers
 
 def main():
     parser = argparse.ArgumentParser(description='Run the Markdown Confluence Transmogrifier in the specified mode.')
-    parser.add_argument('--user', help='Confluence user')
+    parser.add_argument('--confluence_user', help='Confluence user')
     parser.add_argument('--confluence_personal_access_token', help='personal access token')
     parser.add_argument('--confluence_api_token', help='API token')
     parser.add_argument('--confluence_space', help='Confluence space')
@@ -21,9 +21,9 @@ def main():
     args = parser.parse_args()
 
     # Override config values with command-line arguments if provided
-    config.CONFLUENCE_USER = args.user or config.CONFLUENCE_USER
-    config.CONFLUENCE_PERSONAL_ACCESS_TOKEN = args.token or config.CONFLUENCE_PERSONAL_ACCESS_TOKEN
-    config.CONFLUENCE_API_TOKEN = args.token or config.CONFLUENCE_API_TOKEN
+    config.CONFLUENCE_USER = args.confluence_user or config.CONFLUENCE_USER
+    config.CONFLUENCE_PERSONAL_ACCESS_TOKEN = args.confluence_personal_access_token or config.CONFLUENCE_PERSONAL_ACCESS_TOKEN
+    config.CONFLUENCE_API_TOKEN = args.confluence_api_token or config.CONFLUENCE_API_TOKEN
     config.CONFLUENCE_SPACE = args.confluence_space or config.CONFLUENCE_SPACE
     config.CONFLUENCE_BASE_URL = args.confluence_base_url or config.CONFLUENCE_BASE_URL
     config.CONFLUENCE_PARENT_ID = args.confluence_parent_id or config.CONFLUENCE_PARENT_ID
