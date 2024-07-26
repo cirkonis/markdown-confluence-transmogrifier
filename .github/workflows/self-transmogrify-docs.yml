@@ -24,12 +24,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run deployment
-        uses: ghcr.io/cirkonis/markdown-confluence-transmogrifier:latest
-        env:
-          CONFLUENCE_USER: ${{ secrets.CONFLUENCE_USER }}
-          CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
-          CONFLUENCE_SPACE: ${{ secrets.CONFLUENCE_SPACE }}
-          CONFLUENCE_BASE_URL: ${{ secrets.CONFLUENCE_BASE_URL }}
-          CONFLUENCE_PARENT_ID: ${{ secrets.CONFLUENCE_PARENT_ID }}
-          MARKDOWN_DOCUMENTATION_DIRECTORY: ../documentation/markdown
-          DOCUMENTATION_IMAGE_DIRECTORY: ../documentation/images
+        run: |
+          docker run --rm \
+            -e CONFLUENCE_USER=${{ secrets.CONFLUENCE_USER }} \
+            -e CONFLUENCE_API_TOKEN=${{ secrets.CONFLUENCE_API_TOKEN }} \
+            -e CONFLUENCE_SPACE=${{ secrets.CONFLUENCE_SPACE }} \
+            -e CONFLUENCE_BASE_URL=${{ secrets.CONFLUENCE_BASE_URL }} \
+            -e CONFLUENCE_PARENT_ID=${{ secrets.CONFLUENCE_PARENT_ID }} \
+            -e MARKDOWN_DOCUMENTATION_DIRECTORY=../documentation/markdown \
+            -e DOCUMENTATION_IMAGE_DIRECTORY=../documentation/images \
+            ghcr.io/cirkonis/markdown-confluence-transmogrifier:latest
