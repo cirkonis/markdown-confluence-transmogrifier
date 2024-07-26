@@ -4,10 +4,14 @@ import argparse
 import config
 import logging
 
+from functions.set_auth_headers import set_auth_headers
+
 
 def main():
     parser = argparse.ArgumentParser(description='Run the Markdown Confluence Transmogrifier in the specified mode.')
-    parser.add_argument('--token', help='Token with "" is mandatory')
+    parser.add_argument('--user', help='Confluence user')
+    parser.add_argument('--confluence_personal_access_token', help='personal access token')
+    parser.add_argument('--confluence_api_token', help='API token')
     parser.add_argument('--confluence_space', help='Confluence space')
     parser.add_argument('--confluence_base_url', help='Confluence base URL')
     parser.add_argument('--confluence_parent_id', help='Confluence parent ID')
@@ -17,17 +21,20 @@ def main():
     args = parser.parse_args()
 
     # Override config values with command-line arguments if provided
-    config.CONFLUENCE_TOKEN = args.token or config.CONFLUENCE_TOKEN
+    config.CONFLUENCE_USER = args.user or config.CONFLUENCE_USER
+    config.CONFLUENCE_PERSONAL_ACCESS_TOKEN = args.token or config.CONFLUENCE_PERSONAL_ACCESS_TOKEN
+    config.CONFLUENCE_API_TOKEN = args.token or config.CONFLUENCE_API_TOKEN
     config.CONFLUENCE_SPACE = args.confluence_space or config.CONFLUENCE_SPACE
     config.CONFLUENCE_BASE_URL = args.confluence_base_url or config.CONFLUENCE_BASE_URL
     config.CONFLUENCE_PARENT_ID = args.confluence_parent_id or config.CONFLUENCE_PARENT_ID
     config.MARKDOWN_DOCUMENTATION_DIRECTORY = args.markdown_documentation_directory or config.MARKDOWN_DOCUMENTATION_DIRECTORY
     config.DOCUMENTATION_IMAGE_DIRECTORY = args.documentation_image_directory or config.DOCUMENTATION_IMAGE_DIRECTORY
 
-    # Validate that all required Confluence configuration values are provided
+    # Set authentication headers
+    set_auth_headers()
 
-    if not all([config.CONFLUENCE_TOKEN, config.CONFLUENCE_SPACE, config.CONFLUENCE_BASE_URL,
-                config.CONFLUENCE_PARENT_ID]):
+    # Validate that all required Confluence configuration values are provided
+    if not all([config.CONFLUENCE_AUTH_HEADERS, config.CONFLUENCE_SPACE, config.CONFLUENCE_BASE_URL, config.CONFLUENCE_PARENT_ID]):
         raise ValueError(
             "All Confluence-related configuration values (token, space, base URL, parent ID) must be provided either "
             "via command-line arguments or environment variables.")
