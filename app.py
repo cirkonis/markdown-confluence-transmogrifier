@@ -5,6 +5,7 @@ import config
 import logging
 
 from functions.set_auth_headers import set_auth_headers
+from functions.transmogrify_documentation import transmogrify_documentation
 
 
 def main():
@@ -58,6 +59,8 @@ def main():
     logging.info(f"Confluence Parent ID: {config.CONFLUENCE_PARENT_ID}")
     logging.info(f"Markdown Documentation Directory: {config.MARKDOWN_DOCUMENTATION_DIRECTORY}")
     logging.info(f"Documentation Image Directory: {config.DOCUMENTATION_IMAGE_DIRECTORY}")
+
+    transmogrify_documentation(config.MARKDOWN_DOCUMENTATION_DIRECTORY, config.CONFLUENCE_PARENT_ID)
 
 
 if __name__ == "__main__":
