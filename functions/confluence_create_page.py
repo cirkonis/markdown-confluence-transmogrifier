@@ -2,6 +2,10 @@ import logging
 import json
 import requests
 import config
+from urllib3.exceptions import InsecureRequestWarning
+
+# Suppress only the single warning from urllib3 needed.
+requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
 
 def confluence_create_page(title, content, parent_page_id):
@@ -61,9 +65,18 @@ def confluence_create_page(title, content, parent_page_id):
     logging.debug(response.status_code)
     if response.status_code == 200:
         logging.info(title + "- Page created successfully")
-        logging.debug(json.dumps(json.loads(response.text), indent=4, sort_keys=True))
+        response_data = response.json()
+        logging.debug(json.dumps(response_data, indent=4, sort_keys=True))
+        # return new page id
+        page_id = response_data.get('id')
+        if page_id:
+            logging.debug("Returning created page id: " + page_id)
+            return page_id
+        else:
+            logging.error("Page ID not found in response")
+            logging.error("Response content: " + response.text)
+            return None
     else:
         logging.error(title + "- Page has not been created")
-    # return new page id
-    logging.debug("Returning created page id: " + json.loads(response.text)['id'])
-    return json.loads(response.text)['id']
+        logging.error("Response content: " + response.text)
+        return None
