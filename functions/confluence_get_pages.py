@@ -8,7 +8,7 @@ def confluence_get_pages(page_id):
     all_page_ids = []
 
     # Define function to recursively fetch pages
-    url = f"{config.CONFLUENCE_BASE_URL}/content/{page_id}/child/page"
+    url = f"{config.CONFLUENCE_BASE_URL}content/{page_id}/child/page"
     logging.info('fetch pages URL: ' + url)
     response = requests.get(url, headers=config.CONFLUENCE_AUTH_HEADERS)
     data = response.json()
