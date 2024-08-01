@@ -1,9 +1,6 @@
 name: Self transmogrify docs
 
 on:
-  push:
-    branches:
-      - '**'
   workflow_dispatch:
 
 jobs:
@@ -31,7 +28,7 @@ jobs:
             -e CONFLUENCE_SPACE=${{ secrets.CONFLUENCE_SPACE }} \
             -e CONFLUENCE_BASE_URL=${{ secrets.CONFLUENCE_BASE_URL }} \
             -e CONFLUENCE_PARENT_ID=${{ secrets.CONFLUENCE_PARENT_ID }} \
-            -e MARKDOWN_DOCUMENTATION_DIRECTORY=../documentation/markdown \
-            -e DOCUMENTATION_IMAGE_DIRECTORY=../documentation/images \
-            -e LOGGING_LEVEL=INFO \
+            -e MARKDOWN_DOCUMENTATION_DIRECTORY=${{env.MARKDOWN_DOCUMENTATION_DIRECTORY}} \
+            -e DOCUMENTATION_IMAGE_DIRECTORY=${{env.DOCUMENTATION_IMAGE_DIRECTORY}} \
+            -e LOGGING_LEVEL=${{env.LOGGING_LEVEL}} \
             ghcr.io/cirkonis/markdown-confluence-transmogrifier:latest

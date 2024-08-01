@@ -4,6 +4,8 @@ import argparse
 import config
 import logging
 
+from functions.confluence_delete_pages import confluence_delete_pages
+from functions.confluence_get_pages import confluence_get_pages
 from functions.set_auth_headers import set_auth_headers
 from functions.transmogrify_documentation import transmogrify_documentation
 
@@ -35,11 +37,11 @@ def main():
     set_auth_headers()
 
     # Validate that all required Confluence configuration values are provided
-    if not all([config.CONFLUENCE_AUTH_HEADERS, config.CONFLUENCE_SPACE, config.CONFLUENCE_BASE_URL, config.CONFLUENCE_PARENT_ID]):
+    if not all([config.CONFLUENCE_AUTH_HEADERS, config.CONFLUENCE_SPACE, config.CONFLUENCE_BASE_URL,
+                config.CONFLUENCE_PARENT_ID]):
         raise ValueError(
             "All Confluence-related configuration values (token, space, base URL, parent ID) must be provided either "
             "via command-line arguments or environment variables.")
-
 
     """
     Configure the logging settings.
@@ -60,6 +62,8 @@ def main():
     logging.info(f"Markdown Documentation Directory: {config.MARKDOWN_DOCUMENTATION_DIRECTORY}")
     logging.info(f"Documentation Image Directory: {config.DOCUMENTATION_IMAGE_DIRECTORY}")
 
+    # THE MEAT AND POTATOES
+    confluence_delete_pages(confluence_get_pages(config.CONFLUENCE_PARENT_ID))
     transmogrify_documentation(config.MARKDOWN_DOCUMENTATION_DIRECTORY, config.CONFLUENCE_PARENT_ID)
 
 
