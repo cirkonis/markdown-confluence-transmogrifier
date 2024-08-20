@@ -22,16 +22,16 @@ def test_transmogrify_documentation(mock_logging_info, mock_scandir, mock_transm
     # Create mock entries for the directory and files
     mock_entries_main = [
         create_mock_entry('/path/to/DIR/file_one.md', is_file=True),
-        create_mock_entry('/path/to/DIR/directory_one', is_dir=True)
+        create_mock_entry('/path/to/DIR/Directory One', is_dir=True)
     ]
     mock_entries_subdir = [
-        create_mock_entry('/path/to/DIR/directory_one/directory_file_one.md', is_file=True)
+        create_mock_entry('/path/to/DIR/Directory One/directory_file_one.md', is_file=True)
     ]
 
     def scandir_side_effect(path):
         if path == '/path/to/DIR':
             return mock_entries_main
-        elif path == '/path/to/DIR/directory_one':
+        elif path == '/path/to/DIR/Directory One':
             return mock_entries_subdir
         else:
             return []
@@ -40,7 +40,7 @@ def test_transmogrify_documentation(mock_logging_info, mock_scandir, mock_transm
 
     # Mock the behavior of transmogrify_directory and transmogrify_file
     mock_transmogrify_directory.side_effect = lambda directory, parent_page_id: (
-        'new_page_id' if directory.path == '/path/to/DIR/directory_one' else 'parent_page_id'
+        'new_page_id' if directory.path == '/path/to/DIR/Directory One' else 'parent_page_id'
     )
     mock_transmogrify_file.return_value = None  # No return value expected for this
 
@@ -48,7 +48,7 @@ def test_transmogrify_documentation(mock_logging_info, mock_scandir, mock_transm
     transmogrify_documentation('/path/to/DIR', 'parent_page_id')
 
     # Assertions
-    # Check that transmogrify_directory was called correctly for directory_one
+    # Check that transmogrify_directory was called correctly for Directory One
     mock_transmogrify_directory.assert_called_once_with(mock_entries_main[1], 'parent_page_id')
 
     # Check that transmogrify_file was called for file_one.md with parent_page_id
@@ -60,6 +60,6 @@ def test_transmogrify_documentation(mock_logging_info, mock_scandir, mock_transm
     # Verify logging info was called correctly
     mock_logging_info.assert_any_call('Publishing documentation from: /path/to/DIR')
     mock_logging_info.assert_any_call('Found file: /path/to/DIR/file_one.md')
-    mock_logging_info.assert_any_call('Found directory: /path/to/DIR/directory_one')
-    mock_logging_info.assert_any_call('Publishing documentation from: /path/to/DIR/directory_one')
-    mock_logging_info.assert_any_call('Found file: /path/to/DIR/directory_one/directory_file_one.md')
+    mock_logging_info.assert_any_call('Found directory: /path/to/DIR/Directory One')
+    mock_logging_info.assert_any_call('Publishing documentation from: /path/to/DIR/Directory One')
+    mock_logging_info.assert_any_call('Found file: /path/to/DIR/Directory One/directory_file_one.md')

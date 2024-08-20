@@ -1,5 +1,9 @@
+import os
+
 import pytest
 import logging
+
+from functions.confluence_attach_file import confluence_attach_file
 from functions.confluence_create_page import confluence_create_page
 from functions.confluence_delete_pages import confluence_delete_pages
 from functions.confluence_get_pages import confluence_get_pages
@@ -61,3 +65,29 @@ def test_delete_pages(setup_logging, setup_auth):
     # Verify the page is deleted
     page_ids = confluence_get_pages(config.CONFLUENCE_PARENT_ID)
     assert page_id not in page_ids, "Deleted page ID still found in parent page's child pages"
+
+
+def test_attach_file(setup_logging, setup_auth):
+    title = "Integration Test Page for Attachment"
+    content = "<p>Content for attachment test page.</p>"
+
+    # Create page
+    page_id = confluence_create_page(title, content, config.CONFLUENCE_PARENT_ID)
+    assert page_id is not None, "Failed to create page, page_id is None"
+    logging.info(f"Created page ID: {page_id}")
+
+    try:
+        # Path to the file to be attached (make sure the file exists at this path)
+        file_path = os.path.join(config.DOCUMENTATION_IMAGE_DIRECTORY, "transmogrify.jpg")
+
+        # Attach file
+        with open(file_path, 'rb') as attached_file:
+            attachment_id = confluence_attach_file(page_id, attached_file)
+            assert attachment_id is not None, "Failed to attach file, attachment_id is None"
+            logging.info(f"Attached file ID: {attachment_id}")
+
+    finally:
+        # Ensure the page is deleted regardless of the test outcome
+        deleted_pages = confluence_delete_pages([page_id])
+        assert page_id in deleted_pages, "Failed to delete the page"
+        logging.info(f"Deleted page IDs: {deleted_pages}")
