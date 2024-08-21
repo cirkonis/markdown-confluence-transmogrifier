@@ -5,7 +5,6 @@ from functions.transmogrify_file import transmogrify_file
 
 
 def transmogrify_documentation(thing_to_transmogrify, parent_page_id):
-    logging.info("Publishing documentation from: " + thing_to_transmogrify)
 
     for entry in os.scandir(thing_to_transmogrify):
         logging.info(f"Processing entry: {entry.path}")

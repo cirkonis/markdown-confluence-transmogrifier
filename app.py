@@ -33,16 +33,6 @@ def main():
     config.MARKDOWN_DOCUMENTATION_DIRECTORY = args.markdown_documentation_directory or config.MARKDOWN_DOCUMENTATION_DIRECTORY
     config.DOCUMENTATION_IMAGE_DIRECTORY = args.documentation_image_directory or config.DOCUMENTATION_IMAGE_DIRECTORY
 
-    # Set authentication headers
-    set_auth_headers()
-
-    # Validate that all required Confluence configuration values are provided
-    if not all([config.CONFLUENCE_AUTH_HEADERS, config.CONFLUENCE_SPACE, config.CONFLUENCE_BASE_URL,
-                config.CONFLUENCE_PARENT_ID]):
-        raise ValueError(
-            "All Confluence-related configuration values (token, space, base URL, parent ID) must be provided either "
-            "via command-line arguments or environment variables.")
-
     """
     Configure the logging settings.
     """
@@ -61,6 +51,9 @@ def main():
     logging.info(f"Confluence Parent ID: {config.CONFLUENCE_PARENT_ID}")
     logging.info(f"Markdown Documentation Directory: {config.MARKDOWN_DOCUMENTATION_DIRECTORY}")
     logging.info(f"Documentation Image Directory: {config.DOCUMENTATION_IMAGE_DIRECTORY}")
+
+    # Set authentication headers
+    set_auth_headers()
 
     # THE MEAT AND POTATOES
     confluence_delete_pages(confluence_get_pages(config.CONFLUENCE_PARENT_ID))

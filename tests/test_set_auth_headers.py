@@ -1,7 +1,5 @@
-# tests/test_set_auth_headers.py
-
 import pytest
-
+import base64
 import config
 from functions.set_auth_headers import set_auth_headers
 
@@ -17,7 +15,8 @@ def test_set_auth_headers_with_personal_access_token():
 
     # Assert
     assert config.CONFLUENCE_AUTH_HEADERS == {
-        'Authorization': 'Bearer personal_access_token'
+        'Authorization': 'Bearer personal_access_token',
+        'Content-Type': 'application/json'
     }
 
 
@@ -31,9 +30,12 @@ def test_set_auth_headers_with_api_token():
     set_auth_headers()
 
     # Assert
-    expected_auth_value = 'Basic ' + 'user@example.com:api_token'.encode('utf-8').strip().decode('ascii')
+    credentials = f'user@example.com:api_token'
+    encoded_credentials = base64.b64encode(credentials.encode('utf-8')).decode('ascii')
+    expected_auth_value = f'Basic {encoded_credentials}'
     assert config.CONFLUENCE_AUTH_HEADERS == {
-        'Authorization': expected_auth_value
+        'Authorization': expected_auth_value,
+        'Content-Type': 'application/json'
     }
 
 
@@ -58,7 +60,11 @@ def test_set_auth_headers_with_both_tokens():
     # Call the function
     set_auth_headers()
 
-    # Assert that personal access token takes priority
+    # Assert that basic auth takes priority
+    credentials = f'user@example.com:api_token'
+    encoded_credentials = base64.b64encode(credentials.encode('utf-8')).decode('ascii')
+    expected_auth_value = f'Basic {encoded_credentials}'
     assert config.CONFLUENCE_AUTH_HEADERS == {
-        'Authorization': 'Bearer personal_access_token'
+        'Authorization': expected_auth_value,
+        'Content-Type': 'application/json'
     }

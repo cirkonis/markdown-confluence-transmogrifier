@@ -26,6 +26,8 @@ def transmogrify_file(file, parent_page_id):
         parent_page_id=parent_page_id,
     )
 
+    logging.debug("Page id for file attaching: " + str(page_id_for_file_attaching))
+
     if not files_to_upload:
         logging.debug("No files to upload")
         return
