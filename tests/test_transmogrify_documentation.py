@@ -58,8 +58,9 @@ def test_transmogrify_documentation(mock_logging_info, mock_scandir, mock_transm
     mock_transmogrify_file.assert_any_call(mock_entries_subdir[0], 'new_page_id')
 
     # Verify logging info was called correctly
-    mock_logging_info.assert_any_call('Publishing documentation from: /path/to/DIR')
+    mock_logging_info.assert_any_call('Processing entry: /path/to/DIR/file_one.md')
     mock_logging_info.assert_any_call('Found file: /path/to/DIR/file_one.md')
+    mock_logging_info.assert_any_call('Processing entry: /path/to/DIR/Directory One')
     mock_logging_info.assert_any_call('Found directory: /path/to/DIR/Directory One')
-    mock_logging_info.assert_any_call('Publishing documentation from: /path/to/DIR/Directory One')
+    mock_logging_info.assert_any_call('Processing entry: /path/to/DIR/Directory One/directory_file_one.md')
     mock_logging_info.assert_any_call('Found file: /path/to/DIR/Directory One/directory_file_one.md')
