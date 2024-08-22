@@ -1,4 +1,4 @@
-name: Self transmogrify docs
+name: TEST Self transmogrify docs
 
 on:
   workflow_dispatch:
