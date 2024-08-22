@@ -1,17 +1,8 @@
+import logging
 import re
 
 
 def transmogrify_code_blocks(content):
-    """
-    Processes the content to convert Markdown code blocks to Confluence format block macros.
-
-    Args:
-        content (str): The content of the Markdown file.
-
-    Returns:
-        tuple: The content with placeholders for Confluence macros and a dictionary of placeholders to macros.
-    """
-
     macros = {}
 
     def replace_code_block(match):
@@ -27,7 +18,6 @@ def transmogrify_code_blocks(content):
                  f'<ac:plain-text-body><![CDATA[{code}]]></ac:plain-text-body>'
                  f'</ac:structured-macro>')
 
-        # Replace the macro with a placeholder
         placeholder = f"@@MACRO_{hash(macro)}@@"
         macros[placeholder] = macro
         return placeholder
@@ -35,12 +25,14 @@ def transmogrify_code_blocks(content):
     # Apply the regex replacement for code blocks
     content = re.sub(r'```(\w+)?\n(.*?)\n```', replace_code_block, content, flags=re.DOTALL)
 
+    logging.debug("Code blocks transmogrified with placeholders: " + content)
+
     return content, macros
 
 
 def replace_placeholders_with_macros(html_content, macros):
-    # Replace placeholders with their corresponding macros
     for placeholder, macro in macros.items():
+        # Ensure macros aren't wrapped in <p> tags
+        html_content = html_content.replace(f"<p>{placeholder}</p>", macro)
         html_content = html_content.replace(placeholder, macro)
     return html_content
-

@@ -20,13 +20,13 @@ def transmogrify_file(file, parent_page_id):
             new_file_content += line
 
     # Apply the code block conversion to the entire content after processing images and links
-    # new_file_content, macros = transmogrify_code_blocks(new_file_content)
+    new_file_content, macros = transmogrify_code_blocks(new_file_content)
 
     # Convert the fully processed Markdown to HTML
     html_content = markdown.markdown(new_file_content, extensions=['markdown.extensions.tables', 'fenced_code'])
 
     # Replace the placeholders with the actual Confluence macros
-    # html_content = replace_placeholders_with_macros(html_content, macros)
+    html_content = replace_placeholders_with_macros(html_content, macros)
 
     logging.debug("FINAL HTML CONTENT:  " + html_content)
 
