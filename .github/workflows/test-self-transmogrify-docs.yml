@@ -28,7 +28,7 @@ jobs:
             -e CONFLUENCE_SPACE=${{ secrets.CONFLUENCE_SPACE }} \
             -e CONFLUENCE_BASE_URL=${{ secrets.CONFLUENCE_BASE_URL }} \
             -e CONFLUENCE_PARENT_ID=${{ secrets.TEST_CONFLUENCE_PAGE_ID }} \
-            -e MARKDOWN_DOCUMENTATION_DIRECTORY=${{env.MARKDOWN_DOCUMENTATION_DIRECTORY}} \
-            -e DOCUMENTATION_IMAGE_DIRECTORY=${{env.DOCUMENTATION_IMAGE_DIRECTORY}} \
-            -e LOGGING_LEVEL=${{env.TEST_LOGGING_LEVEL}} \
+            -e MARKDOWN_DOCUMENTATION_DIRECTORY=${{vars.MARKDOWN_DOCUMENTATION_DIRECTORY}} \
+            -e DOCUMENTATION_IMAGE_DIRECTORY=${{vars.DOCUMENTATION_IMAGE_DIRECTORY}} \
+            -e LOGGING_LEVEL=${{vars.TEST_LOGGING_LEVEL}} \
             ghcr.io/cirkonis/markdown-confluence-transmogrifier:latest
