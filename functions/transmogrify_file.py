@@ -2,7 +2,7 @@ import logging
 
 import markdown
 
-from functions.attach_files_to_page import attach_files_to_page
+from functions.confluence_attach_file import attach_files_to_page
 from functions.confluence_create_page import confluence_create_page
 from functions.transmogrify_code_blocks import transmogrify_code_blocks, replace_placeholders_with_macros
 from functions.transmogrify_images import transmogrify_images
