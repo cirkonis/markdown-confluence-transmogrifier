@@ -56,7 +56,10 @@ def main():
     set_auth_headers()
 
     # THE MEAT AND POTATOES
-    confluence_delete_pages(confluence_get_pages(config.CONFLUENCE_PARENT_ID))
+    confluence_pages = confluence_get_pages(config.CONFLUENCE_PARENT_ID)
+    logging.info("Confluence pages: " + str(confluence_pages))
+    deleted_pages = confluence_delete_pages(confluence_pages)
+    logging.info("Deleted pages: " + str(deleted_pages))
     transmogrify_documentation(config.MARKDOWN_DOCUMENTATION_DIRECTORY, config.CONFLUENCE_PARENT_ID)
 
 

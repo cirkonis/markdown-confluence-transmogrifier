@@ -41,6 +41,4 @@ def confluence_get_pages(page_id):
         # Log a warning if 'results' key is missing
         logging.warning("No 'results' key found in response")
 
-    logging.info('Pages found: ' + str(all_page_ids))
-
     return all_page_ids
