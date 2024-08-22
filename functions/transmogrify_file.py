@@ -28,6 +28,8 @@ def transmogrify_file(file, parent_page_id):
     # Replace the placeholders with the actual Confluence macros
     html_content = replace_placeholders_with_macros(html_content, macros)
 
+    logging.debug("FINAL HTML CONTENT:  " + html_content)
+
     title = file.name.replace('.md', '').replace('-', ' ').replace('_', ' ').capitalize()
 
     page_id_for_file_attaching = confluence_create_page(
