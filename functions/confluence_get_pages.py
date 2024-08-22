@@ -8,12 +8,21 @@ requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
 
 def confluence_get_pages(page_id):
+    """
+    Recursively fetches all pages and subpages under a given Confluence page ID.
+
+    Args:
+        page_id (str): The ID of the parent page.
+
+    Returns:
+        list: A list of all page IDs under the given parent page.
+    """
     # Initialize list to store page IDs
     all_page_ids = []
 
     # Define function to recursively fetch pages
     url = f"{config.CONFLUENCE_BASE_URL}content/{page_id}/child/page"
-    logging.info('fetch pages URL: ' + url)
+
     response = requests.get(url, headers=config.CONFLUENCE_AUTH_HEADERS)
 
     if response.status_code == 401:
@@ -33,10 +42,9 @@ def confluence_get_pages(page_id):
         # Add IDs of current pages
         for page in data["results"]:
             all_page_ids.append(page["id"])
-            # Check if page has child pages
-            if 'children' in page.get('_expandable', {}):
-                # Recursively fetch child pages
-                confluence_get_pages(page["id"])
+            # Recursively fetch child pages and add their IDs
+            child_page_ids = confluence_get_pages(page["id"])
+            all_page_ids.extend(child_page_ids)  # Add child page IDs to the list
     else:
         # Log a warning if 'results' key is missing
         logging.warning("No 'results' key found in response")
