@@ -7,8 +7,6 @@ from urllib3.exceptions import InsecureRequestWarning
 # Suppress only the single warning from urllib3 needed.
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
-# TODO add in error handling for trying to create a dupelicated page
-
 
 def confluence_create_page(title, content, parent_page_id):
     # describe json query

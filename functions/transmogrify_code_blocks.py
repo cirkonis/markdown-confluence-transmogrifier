@@ -1,5 +1,4 @@
 import re
-import logging
 
 
 def transmogrify_code_blocks(content):
