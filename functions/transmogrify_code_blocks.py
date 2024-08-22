@@ -1,5 +1,4 @@
 import re
-import logging
 
 
 def transmogrify_code_blocks(content):
@@ -35,8 +34,6 @@ def transmogrify_code_blocks(content):
 
     # Apply the regex replacement for code blocks
     content = re.sub(r'```(\w+)?\n(.*?)\n```', replace_code_block, content, flags=re.DOTALL)
-
-    logging.debug("Code blocks transmogrified with placeholders: " + content)
 
     return content, macros
 
