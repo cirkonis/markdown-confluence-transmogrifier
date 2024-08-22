@@ -33,5 +33,5 @@ jobs:
             -e CONFLUENCE_PARENT_ID=${{ secrets.CONFLUENCE_PARENT_ID }} \
             -e MARKDOWN_DOCUMENTATION_DIRECTORY=${{env.MARKDOWN_DOCUMENTATION_DIRECTORY}} \
             -e DOCUMENTATION_IMAGE_DIRECTORY=${{env.DOCUMENTATION_IMAGE_DIRECTORY}} \
-            -e LOGGING_LEVEL=INFO \
+            -e LOGGING_LEVEL={{env.LOGGING_LEVEL}} \
             ghcr.io/cirkonis/markdown-confluence-transmogrifier:latest
