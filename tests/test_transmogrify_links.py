@@ -73,3 +73,15 @@ def test_edge_case_empty_string():
     processed_line = transmogrify_links(line)
 
     assert processed_line == expected_line, f"Expected {expected_line}, but got {processed_line}"
+
+
+def test_multiple_links():
+    config.CONFLUENCE_BASE_URL = "https://randomcompany.confluence.com/rest/api/"
+    config.CONFLUENCE_SPACE = "DOCS"
+
+    line = '[link1](/path/to/page1.md) and [link2](/path/to/page2.md)'
+    expected_line = '[link1](https://randomcompany.confluence.com/display/DOCS/Page1) and [link2](https://randomcompany.confluence.com/display/DOCS/Page2)'
+
+    processed_line = transmogrify_links(line)
+
+    assert processed_line == expected_line, f"Expected {expected_line}, but got {processed_line}"
