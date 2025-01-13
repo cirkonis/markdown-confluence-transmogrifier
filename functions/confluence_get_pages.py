@@ -22,8 +22,9 @@ def confluence_get_pages(page_id):
 
     # Define function to recursively fetch pages
     url = f"{config.CONFLUENCE_BASE_URL}content/{page_id}/child/page"
+    params = {'limit': 250}
 
-    response = requests.get(url, headers=config.CONFLUENCE_AUTH_HEADERS)
+    response = requests.get(url, headers=config.CONFLUENCE_AUTH_HEADERS, params=params, verify=False)
 
     if response.status_code == 401:
         logging.error("Unauthorized access - check your authentication headers")
